@@ -65,29 +65,26 @@ img {
 <h1>INFO498_final_project</h1>
 <p>The final group project for INFO 498.</p>
 <div id="project-description" class="section level3">
-<h3>Project Description</h3>
-<ul>
-<li>What is the dataset you’ll be working with? Please include background on who collected the data, where you accessed it, and any additional information.</li>
-<li>Who is your target audience? You should hone in on one of these audiences.</li>
-<li>What does your audience want to learn from your data? Please list out at least 3 specific questions that your project will answer.</li>
-</ul>
+<h3>Project Description:</h3>
+<p>A web application that lets a user search for any topic and view a map of all locations from which that topic has been mentioned. For the proof of concept we will focus on mentions of political candidates as a way to gauge interest.</p>
+<p>Data sources: * Twitter Search API * Google Maps API</p>
+<p>Target Audience: Any person or group looking to analyze and understand the spread of a trending topic on a geographical scale.</p>
+<p>Questions to answer: * How do tweet content trends of political candidates change geographically? * How does the geographical data change over time? * Where are the different candidates most popular?</p>
 </div>
 <div id="technical-description" class="section level3">
-<h3>Technical Description</h3>
-<ul>
-<li>Final product format</li>
-<li>How we are reading in the data – api</li>
-<li>Data wrangling</li>
-<li>what questions are we answering with data analysis</li>
-<li>challenges are we anticipating</li>
-</ul>
+<h3>Technical description:</h3>
+<p>Format: The final product should be an HTML page that is easily accessible from any desktop browser.</p>
+<p>Data: The data will be read into data frames from the JSON response received from Twitter API.</p>
+<p>Data-wrangling: Sort information by mentions, hashtag, location.</p>
+<p>Libraries: Knitr, JSON, dplyr, plotly</p>
+<p>Challenges: * Readability of the responses. * Require OAUTH for each twitter handle to analyze? * What’s publicly available and what requires OAUTH? * Running out of time. If the feature set is too ambitious for the time available this may not be realistic. We’ll need to make sure we keep it in scope.</p>
 </div>
 <div id="project-setup" class="section level3">
 <h3>Project Setup</h3>
 <ul>
 <li>create repository</li>
 <li>create issues (5 minimum)</li>
-<li>create slack channel – automatically post in channel anytime someone pushes to repository</li>
+<li>create slack channel and automatically post in channel anytime someone pushes to repository</li>
 </ul>
 </div>
 </div>
