@@ -8,5 +8,6 @@
 # RStudio files
 .Rproj.user/
 
-#	ENV files
+#	Untracked files
 .env
+.DS_STORE

@@ -1,8 +1,8 @@
 # credentials.R
+require(dotenv)
+load_dot_env(file = ".env")
 
-API_KEY <- "I9DhFzOgWkwhDhMkgmNqiOG35"
-API_SECRET <- "Gyc7D22NN03mp277exmWUoVf6n7IUNTbRgZXHdpclOGVAuiVTP"
-
-
-access_token <-	"68071383-ssY0YbVrGWfKkD6X8WcZC64QzbbjVWQkaAgPdIKkk"
-access_token_secret <- "clLBn9zKLsPcvmO20njZHyZvksJaJ92BHZ3PH22EGeJTF"
+API_KEY <- Sys.getenv("API_KEY")
+API_SECRET <- Sys.getenv("API_SECRET")
+ACCESS_TOKEN <- Sys.getenv("ACCESS_TOKEN")
+ACCESS_TOKEN_SECRET <- Sys.getenv("ACCESS_TOKEN_SECRET")
