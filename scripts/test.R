@@ -4,11 +4,9 @@ library(plotly)
 library(twitteR)
 load("my_oauth.Rdata")
 
-setup_twitter_oauth(my_oauth$consumerKey, my_oauth$consumerSecret, my_oauth$oauthKey, 
-                    my_oauth$oauthSecret)
 
 #map 1
-tweets = searchTwitter("election+us+2016",n=50, geocode="38,-95,2000mi")
+tweets = searchTwitter("election+us+2016",n=50, geocode="38,-95,2000mi", retryOnRateLimit=0)
 tweets.df = do.call("rbind",lapply(tweets,as.data.frame))
 g <- list(
   scope = 'usa',
@@ -22,8 +20,8 @@ g <- list(
 )
 tweets.df$q <- with(tweets.df, cut(created, 4))
 plot_ly(tweets.df, lat=latitude, lon=longitude, text=text, mode='markers', marker = 
-          list(size = 10, symbol = 'circle'), color=q, type="scattergeo", 
-        locationmode='USA-states')%>%layout(width = 900, height = 700, geo=g)
+          list(size = 7, symbol = 'circle'), color=q, type="scattergeo", 
+        locationmode='USA-states')%>%layout(geo=g)
 
 #map 2
 twitterMap <- function(searchtext,locations,radius){
@@ -65,4 +63,6 @@ twitterMap <- function(searchtext,locations,radius){
 # Example
 twitterMap('trump', 50, '2mi')
 searchTwitter('election+2016', n=50, lang='en')
+
+
 
