@@ -1,10 +1,10 @@
 # History files
 .Rhistory
 .Rapp.history
-
 # Session Data files
 .RData
-
 #	Untracked files
 .env
 .DS_Store
+tweets.json
+.httr-oauth
