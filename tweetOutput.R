@@ -4,7 +4,13 @@ library(shiny)
 library(dplyr)
 
 source("scripts/collect.R")
-bernie <- collect_tweets(TAGS_BERNIE)
+
+tweets <- data.frame(
+  Tweet = character(),
+  User = character(),
+  Time = as.Date(character()),
+  stringsAsFactors = FALSE
+)
 
 runApp(list(
   ui = pageWithSidebar(    
@@ -12,11 +18,12 @@ runApp(list(
     headerPanel("Tweets about stuff"),
     
     sidebarPanel(
-      sliderInput("obs", 
-        "Number of Tweets:", 
-        min = 1,
-        max = 100, 
-        value = 20
+      selectInput("candidate", 
+        "Pick a Candidate", 
+        choices = list(
+          "Bernie Sanders" = "TAGS_BERNIE"
+        ),
+        selected = "TAGS_BERNIE"
       )
     ),
     
@@ -28,9 +35,10 @@ runApp(list(
     autoInvalidate <- reactiveTimer(12000, session)
     output$tweetTable <- renderDataTable({
       autoInvalidate()
-      bernie <- collect_tweets(TAGS_BERNIE)
-      tweets <- bernie %>% select(text, screen_name) %>% arrange(-row_number())
-      
-    })
+      tweets <- collect_tweets(input$candidate) %>% 
+                select(text, screen_name) %>% 
+                arrange(-row_number())
+    }, options = list(bSort=0)
+    )
   }
 ))
