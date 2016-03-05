@@ -1,4 +1,4 @@
-
+# test for search api
 library(devtools)
 library(plotly)
 library(twitteR)
@@ -9,9 +9,8 @@ source("scripts/tags_historical.R")
 source("scripts/credentials.R")
 load("my_oauth.Rdata")
 setup_twitter_oauth(my_oauth$consumerKey, my_oauth$consumerSecret, my_oauth$oauthKey, my_oauth$oauthSecret)
+
 #map 1
-tweets = searchTwitter("election+us+2016",n=50, geocode="38,-95,2000mi", retryOnRateLimit=0)
-tweets.df = do.call("rbind",lapply(tweets,as.data.frame))
 g <- list(
   scope = 'usa',
   projection = list(type = 'albers usa'),
