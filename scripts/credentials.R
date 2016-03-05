@@ -1,6 +1,6 @@
 # credentials.R
 
-require(dotenv)
+library(dotenv)
 load_dot_env(file = ".env")
 
 API_KEY <- Sys.getenv("API_KEY")
