@@ -12,5 +12,6 @@ filter_tweets <- function(){
     parseTweets("tweets.json", simplify = TRUE) %>%
     select(text, screen_name) %>%
     arrange(-row_number())
+  colnames(tweets_df) <- c("Tweet", "User")
   return(tweets_df)
 }
