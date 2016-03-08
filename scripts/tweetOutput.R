@@ -3,11 +3,13 @@
 library(shiny)
 library(dplyr)
 
+setwd("~/src/INFO_498F/final/INFO498_final_project")
 source("scripts/collect.R")
 source("scripts/parseJSON.R")
 source("scripts/tags.R")
 
-collect_tweets("Election", 2)
+curr_tags <- ""
+file.create("tweets.json")
 
 runApp(list(
   ui = pageWithSidebar(    
@@ -37,8 +39,14 @@ runApp(list(
   server = function(input, output, session) {
     
     gotweet <- eventReactive(input$update, {
+      if (input$candidate != curr_tags) {
+        print(curr_tags)
+        print(input$candidate)
+        assign("curr_tags", input$candidate)
+        #file.remove("tweets.json")
+      }
       withProgress(message = 'Fetching tweets.', value = 0, {
-          collect_tweets(eval(parse(text = input$candidate)), 1)
+          collect_tweets(eval(parse(text = input$candidate)), 4)
       })
     })
     
