@@ -9,9 +9,12 @@ source("scripts/parseJSON.R")
 source("scripts/tags.R")
 
 curr_tags <- ""
+
 file.create("tweets.json")
 
-runApp(list(
+runApp(host = "0.0.0.0",
+       port = 8080,
+  list(
   ui = pageWithSidebar(    
     
     headerPanel("Tweets about stuff"),
@@ -42,7 +45,7 @@ runApp(list(
       if (input$candidate != curr_tags) {
         print(curr_tags)
         print(input$candidate)
-        assign("curr_tags", input$candidate)
+        curr_tags <- input$candidate
         #file.remove("tweets.json")
       }
       withProgress(message = 'Fetching tweets.', value = 0, {
