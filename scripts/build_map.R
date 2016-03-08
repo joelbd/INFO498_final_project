@@ -3,7 +3,8 @@
 library(dplyr)
 library(plotly)
 
-build_map <- function(data) {
+build_map <- function(file) {
+  data <- read.csv(file)
   g <- list(
     scope = 'usa',
     projection = list(type = 'albers usa'),
