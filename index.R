@@ -1,16 +1,18 @@
-# testUI.R
+# index.R
+
 library(shiny)
 library(dplyr)
-library(shinythemes)
+library(streamR)
+
+# This program collects data from the Twitter APIs and outputs the information in a table, map,
+# and graph. The filters are dependent on user input and are full reactive.
 
 setwd("~/src/INFO_498F/final/INFO498_final_project")
 source("scripts/collect.R")
 source("scripts/tags.R")
 
-
+# Create json file to hold tweet data.
 file.create("tweets.json")
-curr_tags <- ""
-
 
 # BEGIN SHINY APP
 stream <- shinyApp(
@@ -21,6 +23,7 @@ stream <- shinyApp(
     inverse = TRUE,
     windowTitle = "This Happened",
     
+    # BEGIN ABOUT UI SECTION
     tabPanel("About This Happened",
       fluidRow(
         column(6, offset = 2,
@@ -67,7 +70,7 @@ stream <- shinyApp(
                 "The source code can be found at"
               )  ,
 
-              tags$a('href="https://github.com/joelbd/INFO498_final_project"',
+              tags$a("https://github.com/joelbd/INFO498_final_project",
                         "https://github.com/joelbd/INFO498_final_project")
             )
           )
@@ -75,41 +78,42 @@ stream <- shinyApp(
       )
     ),
     
+    # BEGIN MAP UI SECTION
     tabPanel("Map of Trends",
-      headerPanel("Maps of Tweets or whatever"),       
-      sidebarLayout(
-        sidebarPanel(
-          radioButtons("plotType", "Plot type",
-            c("Scatter"="p", "Line"="l")
-          )
-        ),
-        mainPanel(
-          plotOutput("plot")
-        )
+      fluidRow(
+        
       )
     ),
     
+    # BEGIN STREAMING UI SECTION
     tabPanel("Real-Time Streaming Tweets",
-      headerPanel("Tweets about stuff"),
-      sidebarPanel(
-        selectInput("candidate", 
-          "Pick a Candidate", 
-          choices = list(
-            "Bernie Sanders" = "TAGS_BERNIE",
-            "Hillary Clinton" = "TAGS_HILLARY",
-            "Ted Cruz" = "TAGS_CRUZ",
-            "Donald Trump" = "TAGS_TRUMP",
-            "Ben Carson" = "TAGS_CARSON",
-            "Marco Rubio" = "TAGS_RUBIO"
+      fluidRow(
+        column(2, offset = 1,
+          selectInput("candidate", 
+            "Pick a Candidate", 
+            choices = list(
+              "Bernie Sanders" = "TAGS_BERNIE",
+              "Hillary Clinton" = "TAGS_HILLARY",
+              "Ted Cruz" = "TAGS_CRUZ",
+              "Donald Trump" = "TAGS_TRUMP",
+              "Ben Carson" = "TAGS_CARSON",
+              "Marco Rubio" = "TAGS_RUBIO"
+            ),
+            selected = NULL
           ),
-          selected = NULL
-       ),
-       actionButton("update", "Change Candidate")
-     ),
-     
-     mainPanel(
-       dataTableOutput("tweetTable")
-     )
+          actionButton("update", "Change Candidate")
+        ),
+        column(4, offset = 2,
+          sliderInput("numSeconds", "How long do you want to listen for tweets? ", 
+            min = 5, max = 30, value = 10, step = 1
+          )
+        )
+      ),
+      fluidRow(
+        column(10, offset = 1,
+          dataTableOutput("tweetTable")
+        )
+      )  
     )
   ),
 # END OF UI SECTION
@@ -120,33 +124,34 @@ server = function(input, output, session) {
   # BEGIN STREAMING TWEETS SECTION
   gotweet <- eventReactive(input$update, {
     if (input$candidate != curr_tags) {
-      print(curr_tags)
-      print(input$candidate)
       curr_tags <<- input$candidate
       file.remove("tweets.json")
     }
     
     withProgress(message = 'Fetching tweets.', value = 0, {
-      collect_tweets(eval(parse(text = input$candidate)), 4)
+      collect_tweets(eval(parse(text = input$candidate)), input$numSeconds)
     })
   })
   
-  autoInvalidate <- reactiveTimer(10000, session)
-  
   output$tweetTable <- renderDataTable({
     gotweet()
-    # autoInvalidate()
     
     tweets_df <-
       parseTweets("tweets.json", simplify = TRUE) %>%
-      select(text, screen_name) %>%
+      select(text, screen_name, id_str) %>%
       arrange(-row_number())
     
-    colnames(tweets_df) <- c("Tweet", "User")
+    tweets_df$id_str <- paste0('<a href="https://twitter.com/statuses/', 
+                               tweets_df$id_str, '">View Tweet</a>')
+    colnames(tweets_df) <- c("Tweet", "User", "Link")
     
     tweets_df
-  }, options = list(ordering = FALSE, searching = FALSE)
+  }, 
+    options = list(ordering = FALSE, searching = FALSE),
+    escape = c(-3)  
   )
+  # END STREAMING TWEETS SECTION
+  
 }
 )
 # END SHINY APP
