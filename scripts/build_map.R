@@ -16,7 +16,7 @@ build_map <- function(file) {
     subunitwidth = 1,
     countrywidth = 1,
     subunitcolor = toRGB("white"),
-    countrycolor = toRGB("white"),
+    countrycolor = toRGB("white")
   )
   #plot data using longitude and latitude data columns
   plot_ly(data, lat=latitude, lon=longitude, text=text, mode='markers', marker = 
