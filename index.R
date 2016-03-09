@@ -89,12 +89,12 @@ thisHappened <- shinyApp(
             choices = list(
               "Bernie Sanders" = "csv_data/sanders.csv",
               "Hillary Clinton" = "csv_data/clinton.csv",
-              "Ted Cruz" = "cruz.csv",
+              "Ted Cruz" = "csv_data/cruz.csv",
               "Donald Trump" = "csv_data/trump.csv",
               "Ben Carson" = "csv_data/carson.csv",
               "Marco Rubio" = "csv_data/rubio.csv"
             ),
-            selected = NULL
+            selected = "csv_data/sanders.csv"
           ),
           dateInput(
             "dateRange", 
@@ -103,11 +103,12 @@ thisHappened <- shinyApp(
             min = "2016-02-24", 
             max = "2016-03-05"
           ),
-          actionButton("updateMap", "Change Candidate")
-        )
-      ),
-      fluidRow(
-        column(10, offset = 1,
+          actionButton("updateMap", "Change Candidate"),
+          tags$p(
+            "words about the map go here"
+          )
+        ),
+        column(9, offset = 2,
           plotlyOutput("tweetMap")
         )
       )
@@ -151,15 +152,21 @@ server = function(input, output, session) {
   
   # BEGIN MAP SECTION
   loadMap <- eventReactive(input$updateMap, {
-    withProgress(message = "Loading map.", value = 0, {
-    })
+    # withProgress(message = "Loading map.", value = 0, {
+    #   print("balls")
+    # })
+    print("balls2")
   })
   
   output$tweetMap <- renderPlotly({
     loadMap()
+    print(input$mapSelect)
     build_map(input$mapSelect)
+    print("balls3")
   })
   # END MAP SECTION
+  
+  
   
   # BEGIN STREAMING TWEETS SECTION
   old_tags <- ""

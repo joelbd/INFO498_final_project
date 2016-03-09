@@ -19,8 +19,9 @@ build_map <- function(file) {
     countrycolor = toRGB("white")
   )
   #plot data using longitude and latitude data columns
-  plot_ly(data, lat=latitude, lon=longitude, text=text, mode='markers', marker = 
+  newMap <- plot_ly(data, lat=latitude, lon=longitude, text=text, mode='markers', marker = 
             list(size = 7, symbol = 'circle', opacity = 0.5), hoverinfo = 'none', type="scattergeo", 
           locationmode='USA-states') %>% layout(geo=g)
+  return(newMap)
 }
 
