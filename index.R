@@ -9,13 +9,15 @@ library(streamR)
 
 setwd("~/src/INFO_498F/final/INFO498_final_project")
 source("scripts/collect.R")
+source("scripts/build_map.R")
+source("scripts/build_plot.R")
 source("scripts/tags.R")
 
 # Create json file to hold tweet data.
 file.create("tweets.json")
 
 # BEGIN SHINY APP
-stream <- shinyApp(
+thisHappened <- shinyApp(
 # BEGIN UI SECTION 
   ui = navbarPage(
     includeCSS("www/style.css"),
@@ -81,7 +83,33 @@ stream <- shinyApp(
     # BEGIN MAP UI SECTION
     tabPanel("Map of Trends",
       fluidRow(
-        
+        column(2,
+          selectInput("mapSelect", 
+            "Pick a Candidate", 
+            choices = list(
+              "Bernie Sanders" = "csv_data/sanders.csv",
+              "Hillary Clinton" = "csv_data/clinton.csv",
+              "Ted Cruz" = "cruz.csv",
+              "Donald Trump" = "csv_data/trump.csv",
+              "Ben Carson" = "csv_data/carson.csv",
+              "Marco Rubio" = "csv_data/rubio.csv"
+            ),
+            selected = NULL
+          ),
+          dateInput(
+            "dateRange", 
+            "Select a date range", 
+            value = "2016-02-28", 
+            min = "2016-02-24", 
+            max = "2016-03-05"
+          ),
+          actionButton("updateMap", "Change Candidate")
+        )
+      ),
+      fluidRow(
+        column(10, offset = 1,
+          plotlyOutput("tweetMap")
+        )
       )
     ),
     
@@ -101,7 +129,7 @@ stream <- shinyApp(
             ),
             selected = NULL
           ),
-          actionButton("update", "Change Candidate")
+          actionButton("update", "Update Tweets")
         ),
         column(4, offset = 2,
           sliderInput("numSeconds", "How long do you want to listen for tweets? ", 
@@ -120,15 +148,31 @@ stream <- shinyApp(
 
 # BEGINNING OF SERVER SECTION
 server = function(input, output, session) {
-
+  
+  # BEGIN MAP SECTION
+  loadMap <- eventReactive(input$updateMap, {
+    withProgress(message = "Loading map.", value = 0, {
+    })
+  })
+  
+  output$tweetMap <- renderPlotly({
+    loadMap()
+    build_map(input$mapSelect)
+  })
+  # END MAP SECTION
+  
   # BEGIN STREAMING TWEETS SECTION
+  old_tags <- ""
+  
   gotweet <- eventReactive(input$update, {
-    if (input$candidate != curr_tags) {
-      curr_tags <<- input$candidate
+    curr_tags <- input$candidate
+    
+    if (old_tags != curr_tags) {
       file.remove("tweets.json")
     }
     
     withProgress(message = 'Fetching tweets.', value = 0, {
+      old_tags <<- curr_tags
       collect_tweets(eval(parse(text = input$candidate)), input$numSeconds)
     })
   })
@@ -158,7 +202,7 @@ server = function(input, output, session) {
 
 # Run Shiny App with specific port and host.
 runApp(
-  stream,
+  thisHappened,
   host = "0.0.0.0",
   port = 8080
 )

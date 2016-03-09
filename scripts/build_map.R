@@ -1,4 +1,4 @@
-# build_map
+# build_map.R
 
 library(dplyr)
 library(plotly)

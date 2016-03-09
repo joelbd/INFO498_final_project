@@ -60,13 +60,15 @@ runApp(host = "0.0.0.0",
 
       tweets_df <-
         parseTweets("tweets.json", simplify = TRUE) %>%
-        select(text, screen_name) %>%
+        select(text, screen_name, id_str) %>%
         arrange(-row_number())
-
-      colnames(tweets_df) <- c("Tweet", "User")
+      tweets_df$id_str <- paste0('<a href="https://twitter.com/statuses/', tweets_df$id_str, '">View Tweet</a>')
+      colnames(tweets_df) <- c("Tweet", "User", "link")
 
       tweets_df
-    }, options = list(ordering = FALSE, searching = FALSE)
+    }, 
+      options = list(ordering = FALSE, searching = FALSE),
+      escape = c(-3)
     )
   }
 ))
