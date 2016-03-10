@@ -7,7 +7,7 @@ source("scripts/getStates.R")
 #function to build map takes csv file as parameter
 build_map <- function(file, day) {
   #read in data from file
-  data <- read.csv('csv_data/clinton.csv', stringsAsFactors = FALSE) %>% filter(!is.na(latitude))
+  data <- read.csv(file, stringsAsFactors = FALSE) %>% filter(!is.na(latitude))
   data$code <- getStates(data)
   data$code <- str_to_title(data$code)
   data$code <- state.abb[match(data$code, state.name)]
@@ -31,15 +31,17 @@ build_map <- function(file, day) {
     countrycolor = toRGB("white")
   )
   # plot data using longitude and latitude data columns
-  # # p <- plot_ly(data, lat=latitude, lon=longitude, text=text, mode='markers', marker = 
-  #         list(size = 7, symbol = 'circle', opacity = 0.5), hoverinfo = 'none', type="scattergeo", 
-               # locationmode='USA-states') %>% layout(geo=g)
-  # return(p)
+ 
 
   p2 <- plot_ly(dataSum, z = sumTweets, text = sumTweets, locations = code, type = 'choropleth',
           locationmode = 'USA-states', color = sumTweets, colors = 'Purples',
           marker = list(line = l), colorbar = list(title = "Number of Tweets")) %>%
-    layout(title = 'Tweets about the presidential candidates', geo = g)
+    layout(title = 'Tweets about the presidential candidates', geo = g) 
+#   %>% 
+#     
+#     add_trace(data, lat=latitude, lon=longitude, text=text, mode='markers', marker = 
+#            list(size = 7, symbol = 'circle', opacity = 0.5), hoverinfo = 'none', type="scattergeo", 
+#    locationmode='USA-states') %>% layout(geo=g)
   return(p2)
 }
 
