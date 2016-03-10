@@ -12,6 +12,7 @@ source("scripts/collect.R")
 source("scripts/build_map.R")
 source("scripts/build_plot.R")
 source("scripts/tags.R")
+source("scripts/getStates.R")
 
 # Create json file to hold tweet data.
 file.create("tweets.json")
@@ -41,24 +42,29 @@ thisHappened <- shinyApp(
           withTags(
             div(class = "about",
               tags$p(
-                "This Happened is the final project for INFO 498F at the University of Washington."
+                "This Happened is a final project for INFO 498F at the University of Washington."
               ),
 
               tags$p(
-                "The goal of this project is to allow anyone to easily get a holistic view on 
-                political social trends during this election period. Social media has become and 
-                increasingly important aspect of the campaigning process. We seek to make the 
-                process of analyzing that easier within the scope of our project."
+                "The goal of this project is to allow anyone to easily get a holistic and 
+                revealing view on political and social trends during this election period. 
+                Social media has become an increasingly important aspect of campaigning. 
+                We seek to make the process of analyzing the candidates and available 
+                political options easier."
               ),
 
               tags$p(
-                "Through the use of this project we can easily analyze for increased mentions and 
-                social activity around and after significant events like Super Tuesday and the 
-                other primaries and caucuses."
+                "Through the use of this project, you can analyze many of the aspects of the  
+                elections. Our real-time, streaming tweets allow you to sample the content of
+                the digital correspondence surrounding the election. Our map allows you to see 
+                the relative geological spread of the tweets from the 25th of Februrary to today. 
+                Our holistic data in the form of a line chart reveals mentions and social activity 
+                around and after significant events like Super Tuesday and the other primaries 
+                and caucuses."
               ),
 
               tags$p(  
-                "Using Twitters APIs we were able to compile the tweet data and segregate by each 
+                "Using Twitters APIs, we were able to compile the tweet data and segregate by each 
                 candidate."
               ),
 
@@ -105,7 +111,9 @@ thisHappened <- shinyApp(
           ),
           actionButton("updateMap", "Change Candidate"),
           tags$p(
-            "words about the map go here"
+            "Use this map to see the concentration of tweets surrounding the selected candidate based on the 
+            date and the geographic data embedded within the tweet's data. By toggling the individual tweet
+            data over the map, it will become even more apparent where the tweets are coming from. "
           )
         ),
         column(9, offset = 2,
@@ -154,6 +162,9 @@ server = function(input, output, session) {
   loadMap <- eventReactive(input$updateMap, {
     withProgress(message = "Loading map.", value = 0, {
     })
+    # withProgress(message = "Loading map.", value = 0, {
+    #   print("balls")
+    # })
   })
   
   output$tweetMap <- renderPlotly({ 
@@ -162,6 +173,8 @@ server = function(input, output, session) {
     print(input$dateSelect)
     # p <- build_map("csv_data/carson.csv", "2016-02-29")
     p
+    print(input$mapSelect)
+    build_map(input$mapSelect)
   })
   # END MAP SECTION
   

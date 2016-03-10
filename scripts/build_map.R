@@ -3,20 +3,21 @@
 library(dplyr)
 library(plotly)
 library(stringr)
-
+source("scripts/getStates.R")
 #function to build map takes csv file as parameter
 build_map <- function(file, day) {
   #read in data from file
-  data <- read.csv(file, stringsAsFactors = FALSE) %>% filter(!is.na(latitude))
+  data <- read.csv('csv_data/clinton.csv', stringsAsFactors = FALSE) %>% filter(!is.na(latitude))
   data$code <- getStates(data)
   data$code <- str_to_title(data$code)
   data$code <- state.abb[match(data$code, state.name)]
   
-  # Create DF to be used for Chorpleth.
-  dataSum <- data %>% group_by(code) %>% summarise(sumTweets = n())
   #filter to select tweets from day selected
-  data[["created"]] <- as.Date(data[["created"]])
+  data$created <- as.Date(data$created)
   data <- filter(data, created %in% as.Date(day))
+  
+  # Create DF to be used for Chorpleth.
+  dataSum <- data %>% group_by(code) %>% summarise(sumTweets = n()) 
   #setup geo plotly parameter
   l <- list(color = toRGB("white"), width = 2)
   g <- list(
