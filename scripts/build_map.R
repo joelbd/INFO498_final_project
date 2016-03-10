@@ -39,7 +39,7 @@ build_map <- function(file, day) {
     layout(title = 'Tweets about the presidential candidates', geo = g) 
 #   %>% 
 #     
-#     add_trace(data, lat=latitude, lon=longitude, text=text, mode='markers', marker = 
+#     add_trace(data, lat=data$latitude, lon=data$longitude, text=text, mode='markers', marker = 
 #            list(size = 7, symbol = 'circle', opacity = 0.5), hoverinfo = 'none', type="scattergeo", 
 #    locationmode='USA-states') %>% layout(geo=g)
   return(p2)
