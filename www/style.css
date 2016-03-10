@@ -5,7 +5,7 @@ h1 {
   font-family: 'Oswald', bold;
   font-weight: 500;
   line-height: 1.1;
-  color: #aa9b73;
+  color: #2a9fd6;
 }
 
 .splash {
@@ -16,15 +16,15 @@ h1 {
 	font-family: 'Roboto', bold;
   font-weight: 150;
   line-height: 1.5;
-  color: #aa9b73;
+  color: #2a9fd6;
 }
 
 body {
-	background-color: #000000;
+	background-color: #222222;
 	font-family: 'Roboto';
   /*font-weight: 250;*/
   line-height: 2;
-  color: #aa9b73;
+  color: #2a9fd6;
 }
 
 
