@@ -12,6 +12,7 @@ source("scripts/collect.R")
 source("scripts/build_map.R")
 source("scripts/build_plot.R")
 source("scripts/tags.R")
+source("scripts/getStates.R")
 
 # Create json file to hold tweet data.
 file.create("tweets.json")
