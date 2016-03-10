@@ -4,9 +4,12 @@ library(dplyr)
 library(plotly)
 
 #function to build map takes csv file as parameter
-build_map <- function(file) {
+build_map <- function(file, day) {
   #read in data from file
   data <- read.csv(file, stringsAsFactors = FALSE)
+  #filter to select tweets from day selected
+  data$created <- as.Date(data$created)
+  data <- filter(data, created %in% as.Date(day))
   #setup geo plotly parameter
   g <- list(
     scope = 'usa',
