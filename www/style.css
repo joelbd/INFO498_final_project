@@ -14,7 +14,7 @@ h1 {
 
 .about {
 	font-family: 'Roboto', bold;
-  font-weight: 150;
+  font-weight: 250;
   line-height: 1.5;
   color: #2a9fd6;
 }
@@ -26,7 +26,6 @@ body {
   line-height: 2;
   color: #2a9fd6;
 }
-
 
 /*Redo some of the bits*/
 .well {
@@ -49,7 +48,7 @@ body {
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #1b5082;
+  background-color: #222222;
 }
 
 table {

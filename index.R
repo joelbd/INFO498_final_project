@@ -31,7 +31,7 @@ thisHappened <- shinyApp(
         column(6, offset = 2,
           withTags(
             div(class = "splash",
-              img(src = "http://thishappened.net/images/header.png")
+              img(src = "http://thishappened.net/images/header2.png")
             )
           )
         )
@@ -97,8 +97,8 @@ thisHappened <- shinyApp(
             selected = "csv_data/sanders.csv"
           ),
           dateInput(
-            "dateRange", 
-            "Select a date range", 
+            "dateSelect", 
+            "Select a date", 
             value = "2016-02-28", 
             min = "2016-02-24", 
             max = "2016-03-05"
@@ -139,7 +139,7 @@ thisHappened <- shinyApp(
         )
       ),
       fluidRow(
-        column(10, offset = 1,
+        column(12,
           dataTableOutput("tweetTable")
         )
       )  
@@ -152,17 +152,15 @@ server = function(input, output, session) {
   
   # BEGIN MAP SECTION
   loadMap <- eventReactive(input$updateMap, {
-    # withProgress(message = "Loading map.", value = 0, {
-    #   print("balls")
-    # })
-    print("balls2")
+    withProgress(message = "Loading map.", value = 0, {
+    })
   })
   
-  output$tweetMap <- renderPlotly({
+  output$tweetMap <- renderPlotly({ 
     loadMap()
-    print(input$mapSelect)
-    build_map(input$mapSelect)
-    print("balls3")
+    p <- build_map(input$mapSelect, input$dateSelect)
+    # p <- build_map("csv_data/carson.csv", "2016-02-29")
+    p
   })
   # END MAP SECTION
   
