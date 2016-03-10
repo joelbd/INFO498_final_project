@@ -134,7 +134,7 @@ thisHappened <- shinyApp(
         ),
         column(4, offset = 2,
           sliderInput("numSeconds", "How long do you want to listen for tweets? ", 
-            min = 5, max = 30, value = 10, step = 1
+            min = 5, max = 30, value = 5, step = 1
           )
         )
       ),
@@ -159,6 +159,7 @@ server = function(input, output, session) {
   output$tweetMap <- renderPlotly({ 
     loadMap()
     p <- build_map(input$mapSelect, input$dateSelect)
+    print(input$dateSelect)
     # p <- build_map("csv_data/carson.csv", "2016-02-29")
     p
   })
