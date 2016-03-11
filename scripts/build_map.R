@@ -33,18 +33,26 @@ build_map <- function(file, day) {
   )
   # plot data using longitude and latitude data columns
 
-
-  p2 <- plot_ly(
-    dataSum, 
-    z = sumTweets, 
-    text = sumTweets, 
-    locations = code, 
+  p <- plot_ly(
+    data,
+    lon = longitude,
+    lat = latitude,
+    # text = "hover",
+    marker = list(size = 11),
+    color = "222222",
+    type = 'scattergeo',
+    locationmode = 'USA-states') %>%
+  add_trace(
+    dataSum,
+    z = dataSum$sumTweets,
+    text = dataSum$sumTweets,
+    locations = dataSum$code,
     type = 'choropleth',
-    locationmode = 'USA-states', 
-    color = sumTweets,
-    opacity = .2,
+    locationmode = 'USA-states',
+    color = dataSum$sumTweets,
+    opacity = 1,
     colors = 'Blues',
-    marker = list(line = l), 
+    marker = list(line = l),
     colorbar = list(
       title = "Number of Tweets",
       tickcolor = "2a9fd6",
@@ -52,23 +60,9 @@ build_map <- function(file, day) {
         color = "2a9fd6"),
       tickfont = list(
         color = "2a9fd6")
-      )
-    ) %>%
-    add_trace(
-      data, 
-      lat = data$latitude, 
-      lon = data$longitude, 
-      text = text,
-      mode='markers', 
-      marker = list(
-        size = 7, 
-        symbol = 'circle', 
-        opacity = 0.5
-      ), 
-      hoverinfo = 'none', 
-      type="scattergeo",
-      locationmode='USA-states') %>% 
-    layout(geo = g, paper_bgcolor = "222222", plot_bgcolor = "rgba(34, 34, 34, 1)")
-  return(p2)
+    )
+  ) %>%
+  layout(geo = g, paper_bgcolor = "222222", plot_bgcolor = "rgba(34, 34, 34, 1)")
+  return(p)
 }
 
