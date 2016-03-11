@@ -109,7 +109,7 @@ thisHappened <- shinyApp(
               "Select a date",
               value = "2016-02-28",
               min = "2016-02-24",
-              max = "2016-03-05"
+              max = "2016-03-10"
             ),
             actionButton("updateMap", "Change Candidate"),
             tags$p(
