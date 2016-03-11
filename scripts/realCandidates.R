@@ -25,17 +25,16 @@ realCandidates <- function(file) {
     name = "Daily Tweets From the candidate's Official Twitter"
     ) %>%
     layout(
-      bgcolor = "rgba(34,34,34,1)",
-      tickcolor = "2a9fd6",
+      font = list(
+        color = "2a9fd6"
+      ),
       height = "600px",
       xaxis = list(
         title = "Days",
-        titlefont = list(color = "2a9fd6"),
         gridcolor = "333333"
       ),
       yaxis = list(
         title = "Number of Tweets",
-        titlefont = list(color = "2a9fd6"),
         gridcolor = "333333"
       ),
       plot_bgcolor = "222222"
