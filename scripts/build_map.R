@@ -5,6 +5,8 @@ library(plotly)
 library(stringr)
 source("scripts/getStates.R")
 #function to build map takes csv file as parameter
+
+
 build_map <- function(file, day) {
   #read in data from file
   data <- read.csv(file, stringsAsFactors = FALSE) %>% filter(!is.na(latitude))
@@ -13,7 +15,10 @@ build_map <- function(file, day) {
   data$code <- state.abb[match(data$code, state.name)]
 
   #filter to select tweets from day selected
-  data$created <- as.Date(data$created)
+  ifelse(file == 'csv_data/clinton.csv', 
+         data$created <- as.Date(data$created, '%m/%d/%y'), 
+         data$created <- as.Date(data$created))
+  
   data <- filter(data, created %in% as.Date(day))
 
   # Create DF to be used for Chorpleth.
@@ -38,7 +43,7 @@ build_map <- function(file, day) {
     lon = longitude,
     lat = latitude,
     # text = "hover",
-    marker = list(size = 11),
+    marker = list(size = 7),
     color = "222222",
     type = 'scattergeo',
     locationmode = 'USA-states') %>%
