@@ -1,6 +1,5 @@
 # collect.R
 
-setwd("~/src/INFO_498F/final/INFO498_final_project")
 source("scripts/credentials.R")
 load("my_oauth.Rdata")
 

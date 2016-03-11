@@ -7,7 +7,6 @@ library(streamR)
 # This program collects data from the Twitter APIs and outputs the information in a table, map,
 # and graph. The filters are dependent on user input and are fully reactive.
 
-setwd("~/src/INFO_498F/final/INFO498_final_project")
 source("scripts/collect.R")
 source("scripts/build_map.R")
 source("scripts/build_plot.R")

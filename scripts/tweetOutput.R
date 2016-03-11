@@ -4,7 +4,6 @@ library(shiny)
 library(dplyr)
 library(streamR)
 
-setwd("~/src/INFO_498F/final/INFO498_final_project")
 source("scripts/collect.R")
 source("scripts/tags.R")
 

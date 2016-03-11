@@ -2,7 +2,6 @@
 
 library(ROAuth)
 
-setwd("~/src/INFO_498F/final/INFO498_final_project/")
 source("scripts/credentials.R")
 
 requestURL <- "https://api.twitter.com/oauth/request_token"
