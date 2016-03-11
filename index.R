@@ -5,7 +5,7 @@ library(dplyr)
 library(streamR)
 
 # This program collects data from the Twitter APIs and outputs the information in a table, map,
-# and graph. The filters are dependent on user input and are full reactive.
+# and graph. The filters are dependent on user input and are fully reactive.
 
 setwd("~/src/INFO_498F/final/INFO498_final_project")
 source("scripts/collect.R")
@@ -13,15 +13,15 @@ source("scripts/build_map.R")
 source("scripts/build_plot.R")
 source("scripts/realCandidates.R")
 source("scripts/tags.R")
-source("scripts/getStates.R")
 
-# Create json file to hold tweet data.
+# Create initial json file to hold tweet data.
 file.create("tweets.json")
 
 # BEGIN SHINY APP
 thisHappened <- shinyApp(
 # BEGIN UI SECTION
   ui = navbarPage(
+    # Include custom CSS for stylizing.
     includeCSS("www/style.css"),
     fluid = TRUE,
     inverse = TRUE,
@@ -49,19 +49,21 @@ thisHappened <- shinyApp(
               tags$p(
                 "The goal of this project is to allow anyone to easily get a holistic and
                 revealing view on political and social trends during this election period.
-                Social media has become an increasingly important aspect of campaigning.
-                We seek to make the process of analyzing the candidates and available
-                political options easier."
+                Social media has become an increasingly important aspect of campaigning in recent
+                years and we seek to make the process of analyzing the candidates and the impact
+                of social media easier."
               ),
 
               tags$p(
-                "Through the use of this project, you can analyze many of the aspects of the
+                "Through the use of this program, you can analyze many of the aspects of the
                 elections. Our real-time, streaming tweets allow you to sample the content of
                 the digital correspondence surrounding the election. Our map allows you to see
                 the relative geological spread of the tweets from the 25th of Februrary to today.
-                Our holistic data in the form of a line chart reveals mentions and social activity
+                We've also included a line chart which reveals total mentions and social activity
                 around and after significant events like Super Tuesday and the other primaries
-                and caucuses."
+                and caucuses. This report is not just about the people's interactions, we've also 
+                included a graph outlining the daily twitter interactions of the various
+                candidates official Twitter handles."
               ),
 
               tags$p(
@@ -112,16 +114,16 @@ thisHappened <- shinyApp(
               "dateSelect",
               "Select a date",
               value = "2016-02-28",
-              min = "2016-02-24",
+              min = "2016-02-25",
               max = "2016-03-11"
             )
           ),
           column(3,
             offset = 1,
             tags$p(
-            "Use this map to see the concentration of tweets surrounding the selected candidate based on the
-            date and the geographic data embedded within the tweet's data. By toggling the individual tweet
-            data over the map, it will become even more apparent where the tweets are coming from. "
+            "Use this map to see the geographical concentration of tweets about your candidate 
+            by date. By toggling the individual tweet data over the map, it will become even more 
+            apparent where the tweets are coming from."
           )
         )
       ),
@@ -148,9 +150,10 @@ thisHappened <- shinyApp(
             ),
             selected = "csv_data/sanders.csv"
           ),
-          actionButton("updateMap", "Change Candidate"),
           tags$p(
-            "Use this plot to see the number of tweets over a range of days about a specific candidate."
+            "This table shows you the cumulative tweets about your candidate day to day. This
+            can be used in conjunction with the Candidate Tweets graph to analyze the social
+            engagement of your candidate and their followers."
           )
         ),
         column(9, offset = 2,
@@ -159,6 +162,8 @@ thisHappened <- shinyApp(
       )
     )
   ),
+  
+  
   # BEGIN CHART OF CANDIDATE TWEETS UI  
   tabPanel("Chart of Candidates Tweets",
     fluidRow(
@@ -230,13 +235,7 @@ server = function(input, output, session) {
   # END MAP SECTION
 
   # BEING PLOT SECTION
-  loadPlot <- eventReactive(input$updatePlot, {
-    withProgress(message = "Loading plot.", value = 0, {
-    })
-  })
-
   output$tweetPlot <- renderPlotly({
-    loadPlot()
     p <- build_plot(input$plotSelect)
     p
   })

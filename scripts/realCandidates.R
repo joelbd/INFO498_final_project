@@ -21,10 +21,10 @@ realCandidates <- function(file) {
     x = created, 
     y = n,
     marker = list(color = "2a9fd6", size = 10),
-    line = list(color = "2a9fd6", opacity = .5),
-    name = "Daily Tweets From the candidate's Official Twitter"
+    line = list(color = "2a9fd6", opacity = .5)
     ) %>%
     layout(
+      title = "Daily Tweets From the candidate's Official Twitter",
       font = list(
         color = "2a9fd6"
       ),
@@ -37,7 +37,8 @@ realCandidates <- function(file) {
         title = "Number of Tweets",
         gridcolor = "333333"
       ),
-      plot_bgcolor = "222222"
+      plot_bgcolor = "222222",
+      paper_bgcolor = "222222"
     )
   p
   return(p)
