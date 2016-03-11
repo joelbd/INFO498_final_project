@@ -92,6 +92,7 @@ thisHappened <- shinyApp(
       tabPanel("Map of Trends",
         fluidRow(
           column(2,
+                 offset = 1,
             selectInput("mapSelect",
                 "Pick a Candidate",
               choices = list(
@@ -103,48 +104,56 @@ thisHappened <- shinyApp(
                   "Marco Rubio" = "csv_data/rubio.csv"
                 ),
               selected = "csv_data/sanders.csv"
-            ),
+            )
+          ),
+          column(2,
+            offset = 1,
             dateInput(
               "dateSelect",
               "Select a date",
               value = "2016-02-28",
               min = "2016-02-24",
               max = "2016-03-11"
-            ),
+            )
+          ),
+          column(3,
+            offset = 1,
             tags$p(
             "Use this map to see the concentration of tweets surrounding the selected candidate based on the
             date and the geographic data embedded within the tweet's data. By toggling the individual tweet
             data over the map, it will become even more apparent where the tweets are coming from. "
           )
-        ),
-        column(8, offset = 3,
-          plotlyOutput("tweetMap")
-          )
         )
       ),
+      fluidRow(
+        column(10, offset = 1,
+          plotlyOutput("tweetMap")
+        ) 
+      )
+    ),
       
       # BEGIN THE CHART UI SECTION
-      tabPanel("Chart of Trends",
-        fluidRow(
-          column(2,
-            selectInput("plotSelect",
-                "Pick a Candidate",
-              choices = list(
-                  "Bernie Sanders" = "csv_data/sanders.csv",
-                  "Hillary Clinton" = "csv_data/clinton.csv",
-                  "Ted Cruz" = "csv_data/cruz.csv",
-                  "Donald Trump" = "csv_data/trump.csv",
-                  "Ben Carson" = "csv_data/carson.csv",
-                  "Marco Rubio" = "csv_data/rubio.csv"
-              ),
-              selected = "csv_data/sanders.csv"
+    tabPanel("Chart of Trends",
+      fluidRow(
+        column(2,
+          selectInput("plotSelect",
+            "Pick a Candidate",
+            choices = list(
+              "Bernie Sanders" = "csv_data/sanders.csv",
+              "Hillary Clinton" = "csv_data/clinton.csv",
+              "Ted Cruz" = "csv_data/cruz.csv",
+              "Donald Trump" = "csv_data/trump.csv",
+              "Ben Carson" = "csv_data/carson.csv",
+              "Marco Rubio" = "csv_data/rubio.csv"
             ),
-            actionButton("updateMap", "Change Candidate"),
-            tags$p(
-              "Use this plot to see the number of tweets over a range of days about a specific candidate."
-            )
+            selected = "csv_data/sanders.csv"
           ),
-          column(9, offset = 2,
+          actionButton("updateMap", "Change Candidate"),
+          tags$p(
+            "Use this plot to see the number of tweets over a range of days about a specific candidate."
+          )
+        ),
+        column(9, offset = 2,
           plotlyOutput("tweetPlot")
         )
       )

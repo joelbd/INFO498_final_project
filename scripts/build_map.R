@@ -58,6 +58,7 @@ build_map <- function(file, day) {
     colors = 'Blues',
     marker = list(line = l),
     colorbar = list(
+      len = .7,
       title = "Number of Tweets",
       tickcolor = "2a9fd6",
       titlefont = list(
@@ -66,7 +67,7 @@ build_map <- function(file, day) {
         color = "2a9fd6")
     )
   ) %>%
-  layout(geo = g, paper_bgcolor = "222222", plot_bgcolor = "rgba(34, 34, 34, 1)")
+  layout(geo = g, paper_bgcolor = "222222", plot_bgcolor = "rgba(34, 34, 34, 1)", height = "800", width = "1200")
   return(p)
 }
 
