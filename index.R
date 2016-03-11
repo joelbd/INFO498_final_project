@@ -148,66 +148,66 @@ thisHappened <- shinyApp(
           plotlyOutput("tweetPlot")
         )
       )
-    ) #,
-#    tabPanel("Chart of Candidates Tweets",
-#     fluidRow(
-#       column(2,
-#         selectInput("plotSelect",
-#             "Pick a Candidate",
-#           choices = list(
-#               "Bernie Sanders" = "csv_data/@BernieSanders.csv",
-#               "Hillary Clinton" = "csv_data/@HillaryClinton.csv",
-#               "Ted Cruz" = "csv_data/@tedcruz.csv",
-#               "Donald Trump" = "csv_data/@realDonaldTrump.csv",
-#               "Ben Carson" = "csv_data/@RealBenCarson.csv",
-#               "Marco Rubio" = "csv_data/@marcoRubio.csv"
-#           ),
-#           selected = "@BernieSanders"
-#         ),
-#         actionButton("updatePlot", "Change Candidate"),
-#         tags$p(
-#           "Use this plot to see the number of tweets over a range of days tweeted by a specific candidate."
-#         )
-#       ),
-#       column(9, offset = 2,
-#       plotlyOutput("candidatePlot")
-#       )
-#     )
-#     )
-    ),
-
-
-    # BEGIN STREAMING UI SECTION
-    tabPanel("Real-Time Streaming Tweets",
-      fluidRow(
-        column(2, offset = 1,
-          selectInput("candidate",
+    )
+  ),
+  # BEGIN CHART OF CANDIDATE TWEETS UI  
+  tabPanel("Chart of Candidates Tweets",
+    fluidRow(
+      column(2,
+        selectInput("candidateSelect",
             "Pick a Candidate",
-            choices = list(
-              "Bernie Sanders" = "TAGS_BERNIE",
-              "Hillary Clinton" = "TAGS_HILLARY",
-              "Ted Cruz" = "TAGS_CRUZ",
-              "Donald Trump" = "TAGS_TRUMP",
-              "Ben Carson" = "TAGS_CARSON",
-              "Marco Rubio" = "TAGS_RUBIO"
-            ),
-            selected = NULL
+          choices = list(
+              "Bernie Sanders" = "csv_data/@BernieSanders.csv",
+              "Hillary Clinton" = "csv_data/@HillaryClinton.csv",
+              "Ted Cruz" = "csv_data/@tedcruz.csv",
+              "Donald Trump" = "csv_data/@realDonaldTrump.csv",
+              "Ben Carson" = "csv_data/@RealBenCarson.csv",
+              "Marco Rubio" = "csv_data/@marcoRubio.csv"
           ),
-          actionButton("update", "Update Tweets")
+          selected = "@BernieSanders"
         ),
-        column(4, offset = 2,
-          sliderInput("numSeconds", "How long do you want to listen for tweets? ",
-            min = 5, max = 30, value = 5, step = 1
-          )
+        tags$p(
+          "Use this plot to see the number of tweets over a range of days tweeted by a specific candidate."
         )
       ),
-      fluidRow(
-        column(12,
-          dataTableOutput("tweetTable")
-        )
+      column(9, offset = 2,
+      plotlyOutput("candidatePlot")
       )
     )
   ),
+
+
+  # BEGIN STREAMING UI SECTION
+  tabPanel("Real-Time Streaming Tweets",
+    fluidRow(
+      column(2, offset = 1,
+        selectInput("candidate",
+          "Pick a Candidate",
+          choices = list(
+            "Bernie Sanders" = "TAGS_BERNIE",
+            "Hillary Clinton" = "TAGS_HILLARY",
+            "Ted Cruz" = "TAGS_CRUZ",
+            "Donald Trump" = "TAGS_TRUMP",
+            "Ben Carson" = "TAGS_CARSON",
+            "Marco Rubio" = "TAGS_RUBIO"
+          ),
+          selected = NULL
+        ),
+        actionButton("update", "Update Tweets")
+      ),
+      column(4, offset = 2,
+        sliderInput("numSeconds", "How long do you want to listen for tweets? ",
+          min = 5, max = 30, value = 5, step = 1
+        )
+      )
+    ),
+    fluidRow(
+      column(12,
+        dataTableOutput("tweetTable")
+      )
+    )
+  )
+),
 # END OF UI SECTION
 
 # BEGINNING OF SERVER SECTION
@@ -234,18 +234,11 @@ server = function(input, output, session) {
   # END PLOT SECTION
 
 #   # BEING CANDIDATE PLOT SECTION
-#   loadCandidatePlot <- eventReactive(input$updatePlot, {
-#     withProgress(message = "Loading plot.", value = 0, {
-#     })
-#   })
-#
-#   output$candidatePlot <- renderPlotly({
-#     loadCandidatePlot()
-#     p <- realCandidates(input$plotSelect)
-#     #p <- realCandidates('csv_data/@BernieSanders.csv')
-#     p
-#   })
-#   # END CANDIDATE PLOT SECTION
+  output$candidatePlot <- renderPlotly({
+    p <- realCandidates(input$candidateSelect)
+    p
+  })
+  # END CANDIDATE PLOT SECTION
 
   # BEGIN STREAMING TWEETS SECTION
   old_tags <- ""
