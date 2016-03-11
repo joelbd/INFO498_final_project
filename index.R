@@ -101,7 +101,6 @@ thisHappened <- shinyApp(
                   "Hillary Clinton" = "csv_data/clinton1.csv",
                   "Ted Cruz" = "csv_data/cruz.csv",
                   "Donald Trump" = "csv_data/trump.csv",
-                  "Ben Carson" = "csv_data/carson.csv",
                   "Marco Rubio" = "csv_data/rubio.csv"
                 ),
               selected = "csv_data/sanders.csv"
