@@ -11,6 +11,7 @@ setwd("~/src/INFO_498F/final/INFO498_final_project")
 source("scripts/collect.R")
 source("scripts/build_map.R")
 source("scripts/build_plot.R")
+source("scripts/realCandidates.R")
 source("scripts/tags.R")
 source("scripts/getStates.R")
 
@@ -87,40 +88,93 @@ thisHappened <- shinyApp(
     ),
     
     # BEGIN MAP UI SECTION
-    tabPanel("Map of Trends",
-      fluidRow(
-        column(2,
-          selectInput("mapSelect", 
-            "Pick a Candidate", 
-            choices = list(
-              "Bernie Sanders" = "csv_data/sanders.csv",
-              "Hillary Clinton" = "csv_data/clinton.csv",
-              "Ted Cruz" = "csv_data/cruz.csv",
-              "Donald Trump" = "csv_data/trump.csv",
-              "Ben Carson" = "csv_data/carson.csv",
-              "Marco Rubio" = "csv_data/rubio.csv"
+    navbarMenu("Daily Trends",
+      tabPanel("Map of Trends",
+        fluidRow(
+          column(2,
+            selectInput("mapSelect", 
+                "Pick a Candidate", 
+              choices = list(
+                  "Bernie Sanders" = "csv_data/sanders.csv",
+                  "Hillary Clinton" = "csv_data/clinton.csv",
+                  "Ted Cruz" = "csv_data/cruz.csv",
+                  "Donald Trump" = "csv_data/trump.csv",
+                  "Ben Carson" = "csv_data/carson.csv",
+                  "Marco Rubio" = "csv_data/rubio.csv"
+                ),
+              selected = "csv_data/sanders.csv"
             ),
-            selected = "csv_data/sanders.csv"
-          ),
-          dateInput(
-            "dateSelect", 
-            "Select a date", 
-            value = "2016-02-28", 
-            min = "2016-02-24", 
-            max = "2016-03-05"
-          ),
-          actionButton("updateMap", "Change Candidate"),
-          tags$p(
+            dateInput(
+              "dateSelect", 
+              "Select a date", 
+              value = "2016-02-28", 
+              min = "2016-02-24", 
+              max = "2016-03-05"
+            ),
+            actionButton("updateMap", "Change Candidate"),
+            tags$p(
             "Use this map to see the concentration of tweets surrounding the selected candidate based on the 
             date and the geographic data embedded within the tweet's data. By toggling the individual tweet
             data over the map, it will become even more apparent where the tweets are coming from. "
-          )
-        ),
-        column(9, offset = 2,
+            )
+          ),
+          column(9, offset = 2,
           plotlyOutput("tweetMap")
+          )
+        )        
+      ),
+      tabPanel("Chart of Trends",
+        fluidRow(
+          column(2,
+            selectInput("plotSelect", 
+                "Pick a Candidate", 
+              choices = list(
+                  "Bernie Sanders" = "csv_data/sanders.csv",
+                  "Hillary Clinton" = "csv_data/clinton.csv",
+                  "Ted Cruz" = "csv_data/cruz.csv",
+                  "Donald Trump" = "csv_data/trump.csv",
+                  "Ben Carson" = "csv_data/carson.csv",
+                  "Marco Rubio" = "csv_data/rubio.csv"
+              ),
+              selected = "csv_data/sanders.csv"
+            ),
+            actionButton("updatePlot", "Change Candidate"),
+            tags$p(
+              "Use this plot to see the number of tweets over a range of days about a specific candidate."
+            )
+          ),
+          column(9, offset = 2,
+          plotlyOutput("tweetPlot")
         )
-      )
+      )        
+    ) #, 
+#    tabPanel("Chart of Candidates Tweets",
+#     fluidRow(
+#       column(2,
+#         selectInput("plotSelect", 
+#             "Pick a Candidate", 
+#           choices = list(
+#               "Bernie Sanders" = "csv_data/@BernieSanders.csv",
+#               "Hillary Clinton" = "csv_data/@HillaryClinton.csv",
+#               "Ted Cruz" = "csv_data/@tedcruz.csv",
+#               "Donald Trump" = "csv_data/@realDonaldTrump.csv",
+#               "Ben Carson" = "csv_data/@RealBenCarson.csv",
+#               "Marco Rubio" = "csv_data/@marcoRubio.csv"
+#           ),
+#           selected = "@BernieSanders"
+#         ),
+#         actionButton("updatePlot", "Change Candidate"),
+#         tags$p(
+#           "Use this plot to see the number of tweets over a range of days tweeted by a specific candidate."
+#         )
+#       ),
+#       column(9, offset = 2,
+#       plotlyOutput("candidatePlot")
+#       )
+#     )        
+#     )
     ),
+    
     
     # BEGIN STREAMING UI SECTION
     tabPanel("Real-Time Streaming Tweets",
@@ -170,14 +224,36 @@ server = function(input, output, session) {
   output$tweetMap <- renderPlotly({ 
     loadMap()
     p <- build_map(input$mapSelect, input$dateSelect)
-    # p <- build_map("csv_data/carson.csv", "2016-02-29")
     p
-    print(input$mapSelect)
-    build_map(input$mapSelect)
   })
   # END MAP SECTION
   
+  # BEING PLOT SECTION
+  loadPlot <- eventReactive(input$updatePlot, {
+    withProgress(message = "Loading plot.", value = 0, {
+    })
+  })
   
+  output$tweetPlot <- renderPlotly({ 
+    loadPlot()
+    p <- build_plot(input$plotSelect)
+    p
+  })
+  # END PLOT SECTION
+  
+#   # BEING CANDIDATE PLOT SECTION
+#   loadCandidatePlot <- eventReactive(input$updatePlot, {
+#     withProgress(message = "Loading plot.", value = 0, {
+#     })
+#   })
+#   
+#   output$candidatePlot <- renderPlotly({ 
+#     loadCandidatePlot()
+#     p <- realCandidates(input$plotSelect)
+#     #p <- realCandidates('csv_data/@BernieSanders.csv')
+#     p
+#   })
+#   # END CANDIDATE PLOT SECTION
   
   # BEGIN STREAMING TWEETS SECTION
   old_tags <- ""
