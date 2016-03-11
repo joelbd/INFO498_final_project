@@ -19,16 +19,16 @@ build_map <- function(file, day) {
   # Create DF to be used for Chorpleth.
   dataSum <- data %>% group_by(code) %>% summarise(sumTweets = n()) 
   #setup geo plotly parameter
-  l <- list(color = toRGB("white"), width = 2)
+  l <- list(color = "FFB247", width = 2)
   g <- list(
     scope = 'usa',
     projection = list(type = 'albers usa'),
     showland = TRUE,
-    landcolor = toRGB("gray85"),
+    landcolor = "d3d3d3d3",
     subunitwidth = 1,
     countrywidth = 1,
-    subunitcolor = toRGB("white"),
-    countrycolor = toRGB("white")
+    subunitcolor = "FFB247",
+    countrycolor = "FFB247"
   )
   # plot data using longitude and latitude data columns
   # # p <- plot_ly(data, lat=latitude, lon=longitude, text=text, mode='markers', marker = 
@@ -37,9 +37,9 @@ build_map <- function(file, day) {
   # return(p)
 
   p2 <- plot_ly(dataSum, z = sumTweets, text = sumTweets, locations = code, type = 'choropleth',
-          locationmode = 'USA-states', color = sumTweets, colors = 'Purples',
+          locationmode = 'USA-states', color = sumTweets, colors = 'Blues',
           marker = list(line = l), colorbar = list(title = "Number of Tweets")) %>%
-    layout(title = 'Tweets about the presidential candidates', geo = g)
+    layout(geo = g, paper_bgcolor = "222222", bgcolor = "222222")
   return(p2)
 }
 

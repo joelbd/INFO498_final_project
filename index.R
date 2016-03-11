@@ -116,7 +116,7 @@ thisHappened <- shinyApp(
             data over the map, it will become even more apparent where the tweets are coming from. "
           )
         ),
-        column(9, offset = 2,
+        column(8, offset = 3,
           plotlyOutput("tweetMap")
         )
       )
@@ -162,19 +162,12 @@ server = function(input, output, session) {
   loadMap <- eventReactive(input$updateMap, {
     withProgress(message = "Loading map.", value = 0, {
     })
-    # withProgress(message = "Loading map.", value = 0, {
-    #   print("balls")
-    # })
   })
   
   output$tweetMap <- renderPlotly({ 
     loadMap()
     p <- build_map(input$mapSelect, input$dateSelect)
-    print(input$dateSelect)
-    # p <- build_map("csv_data/carson.csv", "2016-02-29")
     p
-    print(input$mapSelect)
-    build_map(input$mapSelect)
   })
   # END MAP SECTION
   
