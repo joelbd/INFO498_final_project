@@ -7,13 +7,8 @@ library(plotly)
 build_plot <- function(file) {
   #read in data from file
   data <- read.csv(file, stringsAsFactors=FALSE)
-  
-  ifelse(file == 'csv_data/clinton.csv',
-         data$created <- as.Date(data$created, '%m/%d/%y'),
-         data$created <- as.Date(data$created))
-  
-  #change created column to date objects instead of characters
-  data$created <- as.Date(data$created)
+
+  data$created <- as.Date(data$created, '%m/%d/%y')
   #group data by date created
   data <- group_by(data, created) %>%
     summarise( 
@@ -36,7 +31,7 @@ build_plot <- function(file) {
     data, 
     x = created, 
     y = n, 
-    name = "Daily trends", 
+    name = "Daily trends",
     text = events) %>%
   layout(
     title = "Daily Total Tweets",
@@ -48,6 +43,7 @@ build_plot <- function(file) {
       gridcolor = "333333"
     ),
     font = list(color = "2a9fd6"),
+    
     plot_bgcolor = "222222",
     paper_bgcolor = "222222"
   )  

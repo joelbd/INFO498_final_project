@@ -99,7 +99,7 @@ thisHappened <- shinyApp(
                 "Pick a Candidate",
               choices = list(
                   "Bernie Sanders" = "csv_data/sanders.csv",
-                  "Hillary Clinton" = "csv_data/clinton.csv",
+                  "Hillary Clinton" = "csv_data/clinton1.csv",
                   "Ted Cruz" = "csv_data/cruz.csv",
                   "Donald Trump" = "csv_data/trump.csv",
                   "Ben Carson" = "csv_data/carson.csv",
@@ -115,7 +115,7 @@ thisHappened <- shinyApp(
               "Select a date",
               value = "2016-02-28",
               min = "2016-02-25",
-              max = "2016-03-11"
+              max = "2016-03-10"
             )
           ),
           column(3,

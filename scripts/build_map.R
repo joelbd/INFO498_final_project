@@ -15,9 +15,7 @@ build_map <- function(file, day) {
   data$code <- state.abb[match(data$code, state.name)]
 
   #filter to select tweets from day selected
-  ifelse(file == 'csv_data/clinton.csv',
-         data$created <- as.Date(data$created, '%m/%d/%y'),
-         data$created <- as.Date(data$created))
+  data$created <- as.Date(data$created, '%m/%d/%y')
 
   data <- filter(data, created %in% as.Date(day))
 
