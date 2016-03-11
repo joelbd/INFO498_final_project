@@ -25,6 +25,7 @@ build_map <- function(file, day) {
     projection = list(type = 'albers usa'),
     showland = TRUE,
     landcolor = "d3d3d3d3",
+    bgcolor = "222222",
     subunitwidth = 1,
     countrywidth = 1,
     subunitcolor = "FFB247",
@@ -33,17 +34,41 @@ build_map <- function(file, day) {
   # plot data using longitude and latitude data columns
 
 
-  p2 <- plot_ly(dataSum, z = sumTweets, text = sumTweets, locations = code, type = 'choropleth',
-          locationmode = 'USA-states', color = sumTweets, colors = 'Blues',
-          marker = list(line = l), colorbar = list(title = "Number of Tweets")) %>%
-
-    layout(geo = g, paper_bgcolor = "222222", bgcolor = "222222")
-
-#   %>%
-#
-#     add_trace(data, lat=data$latitude, lon=data$longitude, text=text, mode='markers', marker =
-#            list(size = 7, symbol = 'circle', opacity = 0.5), hoverinfo = 'none', type="scattergeo",
-#    locationmode='USA-states') %>% layout(geo=g)
+  p2 <- plot_ly(
+    dataSum, 
+    z = sumTweets, 
+    text = sumTweets, 
+    locations = code, 
+    type = 'choropleth',
+    locationmode = 'USA-states', 
+    color = sumTweets,
+    opacity = .2,
+    colors = 'Blues',
+    marker = list(line = l), 
+    colorbar = list(
+      title = "Number of Tweets",
+      tickcolor = "2a9fd6",
+      titlefont = list(
+        color = "2a9fd6"),
+      tickfont = list(
+        color = "2a9fd6")
+      )
+    ) %>%
+    add_trace(
+      data, 
+      lat = data$latitude, 
+      lon = data$longitude, 
+      text = text,
+      mode='markers', 
+      marker = list(
+        size = 7, 
+        symbol = 'circle', 
+        opacity = 0.5
+      ), 
+      hoverinfo = 'none', 
+      type="scattergeo",
+      locationmode='USA-states') %>% 
+    layout(geo = g, paper_bgcolor = "222222", plot_bgcolor = "rgba(34, 34, 34, 1)")
   return(p2)
 }
 

@@ -138,7 +138,7 @@ thisHappened <- shinyApp(
               ),
               selected = "csv_data/sanders.csv"
             ),
-            actionButton("updatePlot", "Change Candidate"),
+            actionButton("updateMap", "Change Candidate"),
             tags$p(
               "Use this plot to see the number of tweets over a range of days about a specific candidate."
             )
