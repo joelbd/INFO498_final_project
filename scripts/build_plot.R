@@ -14,7 +14,14 @@ build_plot <- function(file) {
     summarise( 
       #sum tweets created on the same day
       n = n())
+  #added text to the days, detailing some of the events
+  data$events <- c("Feb 24", "NV Primary", "Feb 26", "SC Primary", "Feb 28", "Feb 29", 
+                   "Super Tuesday", "Mar 2", "[R] Presidential Debate", "Ben Carson ends campaign", 
+                   "KA, KT, LA, MA Primaries")
   #create plot
-  plot_ly(data, x = created, y = n, name = "daily trends")
+  plot_ly(data, x = created, y = n, name = "Daily trends", text = events) 
+  # adds grey bars underneath blue line
+  #add_trace(p, type="bar", hoverinfo = "none", opacity = 0.5, marker = list(color = "grey"), showlegend = FALSE)
+  
 }
 
