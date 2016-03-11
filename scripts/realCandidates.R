@@ -24,7 +24,7 @@ realCandidates <- function(file) {
     line = list(color = "2a9fd6", opacity = .5)
     ) %>%
     layout(
-      title = "Daily Tweets From the candidate's Official Twitter",
+      title = "Daily Tweets From The Candidate's Official Twitter",
       font = list(
         color = "2a9fd6"
       ),

@@ -181,7 +181,8 @@ thisHappened <- shinyApp(
           selected = "@BernieSanders"
         ),
         tags$p(
-          "Use this plot to see the number of tweets over a range of days tweeted by a specific candidate."
+          "This chart illustrates how active with social media a candidate is. This chart in 
+          conjunction with the previous paint a good picture of their social engagement"
         )
       ),
       column(9, offset = 2,
