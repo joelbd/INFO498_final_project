@@ -36,12 +36,11 @@ build_map <- function(file, day) {
   p2 <- plot_ly(dataSum, z = sumTweets, text = sumTweets, locations = code, type = 'choropleth',
           locationmode = 'USA-states', color = sumTweets, colors = 'Purples',
           marker = list(line = l), colorbar = list(title = "Number of Tweets")) %>%
-    layout(title = 'Tweets about the presidential candidates', geo = g) 
-#   %>% 
-#     
-#     add_trace(data, lat=data$latitude, lon=data$longitude, text=text, mode='markers', marker = 
-#            list(size = 7, symbol = 'circle', opacity = 0.5), hoverinfo = 'none', type="scattergeo", 
-#    locationmode='USA-states') %>% layout(geo=g)
+    layout(title = 'Tweets about the presidential candidates', geo = g) %>% 
+    
+    add_trace(data, lat=data$latitude, lon=data$longitude, text=text, mode='markers', marker = 
+           list(size = 7, symbol = 'circle', opacity = 0.5), hoverinfo = 'none', type="scattergeo", 
+   locationmode='USA-states') %>% layout(geo=g)
   return(p2)
 }
 
