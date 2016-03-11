@@ -16,8 +16,9 @@ build_plot <- function(file) {
       n = n())
   #added text to the days, detailing some of the events
   data$events <- c("Feb 24", "NV Primary", "Feb 26", "SC Primary", "Feb 28", "Feb 29", 
-                   "Super Tuesday", "Mar 2", "[R] Presidential Debate", "Ben Carson ends campaign", 
-                   "KA, KT, LA, MA Primaries")
+                   "Super Tuesday", "Mar 2", "[R] Presidential Debate (MI)", "Ben Carson ends campaign", 
+                   "KA, KT, LA, MA Primaries", "ME, PR Primaries", "Mar 7", "MI, MS Primaries", 
+                   "[D] Presidential Debate (FL)", "[R] Presidential Debate (FL)", "Mar 11")
   #create plot
   plot_ly(data, x = created, y = n, name = "Daily trends", text = events) 
   # adds grey bars underneath blue line
