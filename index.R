@@ -111,7 +111,6 @@ thisHappened <- shinyApp(
               min = "2016-02-24",
               max = "2016-03-11"
             ),
-            actionButton("updateMap", "Change Candidate"),
             tags$p(
             "Use this map to see the concentration of tweets surrounding the selected candidate based on the
             date and the geographic data embedded within the tweet's data. By toggling the individual tweet
@@ -123,6 +122,8 @@ thisHappened <- shinyApp(
           )
         )
       ),
+      
+      # BEGIN THE CHART UI SECTION
       tabPanel("Chart of Trends",
         fluidRow(
           column(2,
@@ -213,13 +214,7 @@ thisHappened <- shinyApp(
 server = function(input, output, session) {
 
   # BEGIN MAP SECTION
-  loadMap <- eventReactive(input$updateMap, {
-    withProgress(message = "Loading map.", value = 0, {
-    })
-  })
-
   output$tweetMap <- renderPlotly({
-    loadMap()
     p <- build_map(input$mapSelect, input$dateSelect)
     p
   })

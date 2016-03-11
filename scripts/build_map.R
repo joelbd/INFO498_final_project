@@ -37,7 +37,6 @@ build_map <- function(file, day) {
     data,
     lon = longitude,
     lat = latitude,
-    # text = "hover",
     marker = list(size = 11),
     color = "222222",
     type = 'scattergeo',
