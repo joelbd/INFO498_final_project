@@ -1,6 +1,6 @@
 ![Header](www/header2.png)
 
-### Please visit [so.thishappened.net](so.thishappened.net)
+### Please visit [so.thishappened.net](http://so.thishappened.net)
 
 
 The goal of this project is to allow anyone to easily get a holistic and revealing view on political and social trends during this election period. Social media has become an increasingly important aspect of campaigning in recent years and we seek to make the process of analyzing the candidates and the impact of social media easier.
