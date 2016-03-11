@@ -7,17 +7,17 @@ source("scripts/getStates.R")
 #function to build map takes csv file as parameter
 build_map <- function(file, day) {
   #read in data from file
-  data <- read.csv('csv_data/clinton.csv', stringsAsFactors = FALSE) %>% filter(!is.na(latitude))
+  data <- read.csv(file, stringsAsFactors = FALSE) %>% filter(!is.na(latitude))
   data$code <- getStates(data)
   data$code <- str_to_title(data$code)
   data$code <- state.abb[match(data$code, state.name)]
-  
+
   #filter to select tweets from day selected
   data$created <- as.Date(data$created)
   data <- filter(data, created %in% as.Date(day))
-  
+
   # Create DF to be used for Chorpleth.
-  dataSum <- data %>% group_by(code) %>% summarise(sumTweets = n()) 
+  dataSum <- data %>% group_by(code) %>% summarise(sumTweets = n())
   #setup geo plotly parameter
   l <- list(color = "FFB247", width = 2)
   g <- list(
@@ -31,15 +31,19 @@ build_map <- function(file, day) {
     countrycolor = "FFB247"
   )
   # plot data using longitude and latitude data columns
-  # # p <- plot_ly(data, lat=latitude, lon=longitude, text=text, mode='markers', marker = 
-  #         list(size = 7, symbol = 'circle', opacity = 0.5), hoverinfo = 'none', type="scattergeo", 
-               # locationmode='USA-states') %>% layout(geo=g)
-  # return(p)
+
 
   p2 <- plot_ly(dataSum, z = sumTweets, text = sumTweets, locations = code, type = 'choropleth',
           locationmode = 'USA-states', color = sumTweets, colors = 'Blues',
           marker = list(line = l), colorbar = list(title = "Number of Tweets")) %>%
+
     layout(geo = g, paper_bgcolor = "222222", bgcolor = "222222")
+
+#   %>%
+#
+#     add_trace(data, lat=data$latitude, lon=data$longitude, text=text, mode='markers', marker =
+#            list(size = 7, symbol = 'circle', opacity = 0.5), hoverinfo = 'none', type="scattergeo",
+#    locationmode='USA-states') %>% layout(geo=g)
   return(p2)
 }
 

@@ -1,25 +1,21 @@
 # real candidates twitter counts
 
 library(dplyr)
-library(twitteR)
 library(plotly)
-load("my_oauth.Rdata")
-setup_twitter_oauth(my_oauth$consumerKey, my_oauth$consumerSecret, my_oauth$oauthKey, my_oauth$oauthSecret)
 
-clinton <- "@HillaryClinton"
-rubio <- "@marcorubio"
-carson <- "@RealBenCarson"
-trump <- "@realDonaldTrump"
-cruz <- "@tedcruz"
-sanders <- "@BernieSanders"
-realCandidates <- function(candidate) {
-  timeline <- userTimeline(candidate, n=300)
-  timeline = do.call("rbind",lapply(timeline, as.data.frame))
+#realCandidates accepts csv file as parameter
+realCandidates <- function(file) {
+  #read in data from file
+  timeline <- read.csv(file, stringsAsFactors=FALSE)
+  #change created column to date objects instead of characters
   timeline$created <- as.Date(timeline$created)
+  #group data by date created
   timeline <- group_by(timeline, created) %>%
     summarise( 
       #sum tweets created on the same day
       n = n())
-  plot_ly(timeline, x = created, y = n, name = "daily trends")
+  #create plot
+  p <- plot_ly(timeline, x = created, y = n, name = "daily trends")
+  return(p)
 }
 
