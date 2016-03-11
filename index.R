@@ -250,6 +250,7 @@ server = function(input, output, session) {
   # BEGIN STREAMING TWEETS SECTION
   old_tags <- ""
 
+  # Configure a reactive trigger to control fetching of new tweets.
   gotweet <- eventReactive(input$update, {
     curr_tags <- input$candidate
 
@@ -259,10 +260,13 @@ server = function(input, output, session) {
 
     withProgress(message = 'Fetching tweets.', value = 0, {
       old_tags <<- curr_tags
+      
+      # Fetch new tweets using input fields.
       collect_tweets(eval(parse(text = input$candidate)), input$numSeconds)
     })
   })
 
+  # Render the reactive table of found tweets.
   output$tweetTable <- renderDataTable({
     gotweet()
 
@@ -270,13 +274,15 @@ server = function(input, output, session) {
       parseTweets("tweets.json", simplify = TRUE) %>%
       select(text, screen_name, id_str) %>%
       arrange(-row_number())
-
+    
+    # Link to the tweet on twitter.com
     tweets_df$id_str <- paste0('<a href="https://twitter.com/statuses/',
                                tweets_df$id_str, '">View Tweet</a>')
     colnames(tweets_df) <- c("Tweet", "User", "Link")
 
     tweets_df
   },
+    # Remove ordering and search functions. Escape to parse HTML from the id_str column.
     options = list(ordering = FALSE, searching = FALSE),
     escape = c(-3)
   )
